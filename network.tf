@@ -1,10 +1,10 @@
 resource "aws_vpc" "test_vpc" {
   cidr_block = "10.2.0.0/16"
 
-  tags = {
+  tags = merge(local.common_tags,{
     Name = "test_vpc"
     dev  = "true"
-  }
+  })
 }
 
 resource "aws_subnet" "test_subnet" {
@@ -13,10 +13,10 @@ resource "aws_subnet" "test_subnet" {
   availability_zone       = "ap-south-1a"
   map_public_ip_on_launch = true
 
-  tags = {
+  tags = merge(local.common_tags,{
     Name = "test_subnet"
     dev  = "true"
-  }
+  })
 }
 
 resource "aws_network_interface" "test_primary_nic" {
@@ -24,10 +24,10 @@ resource "aws_network_interface" "test_primary_nic" {
   security_groups = [aws_security_group.public_access_sg.id]
 
 
-  tags = {
+  tags = merge(local.common_tags,{
     Name = "primary nic"
     dev  = "true"
-  }
+  })
 }
 
 resource "aws_security_group" "public_access_sg" {
@@ -35,10 +35,10 @@ resource "aws_security_group" "public_access_sg" {
   description = "Allows full access"
   vpc_id      = aws_vpc.test_vpc.id
 
-  tags = {
+  tags = merge(local.common_tags,{
     Name = "test_sg"
     dev  = "true"
-  }
+  })
 }
 
 resource "aws_security_group_rule" "allow_all_inbound" {
@@ -62,10 +62,10 @@ resource "aws_security_group_rule" "allow_all_outbound" {
 resource "aws_internet_gateway" "test_igw" {
   vpc_id = aws_vpc.test_vpc.id
 
-  tags = {
+  tags = merge(local.common_tags,{
     Name = "test_igw"
     dev  = "true"
-  }
+  })
 }
 
 resource "aws_route_table" "test_route_table" {

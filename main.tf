@@ -13,9 +13,9 @@ resource "aws_instance" "example_server" {
     volume_type = "gp3"
   }
 
-  tags = {
+  tags = merge(local.common_tags,{
     Name = "Testing"
-  }
+  })
 
 }
 
